@@ -1,4 +1,3 @@
-import './style.css'
 
 export default {
   render(h) {
