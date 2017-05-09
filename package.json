@@ -19,9 +19,12 @@
   },
   "dependencies": {
     "babel-runtime": "^6.18.0",
+    "history": "^4.6.1",
     "promise-polyfill": "^6.0.2",
     "vue": "^2.2.0",
     "vue-router": "^2.0.0",
+    "vue-visible": "^1.0.1",
+    "vuesible": "^0.1.0",
     "vuex": "^2.0.0",
     "vuex-router-sync": "^4.0.0"
   },

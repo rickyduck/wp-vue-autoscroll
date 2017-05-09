@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Ajax from 'simple-ajax'
+import createHistory from 'history/createBrowserHistory'
+
 
 Vue.use(Vuex)
-
 const state = {
-  initial_post: 'save_money_business_travel-2',
+  //'save_money_business_travel-2'
+  initial_post: history.location,
   current_index: 0,
   end: false,
   prev_post: null,
@@ -22,8 +24,11 @@ const state = {
 const mutations = {
   INITIAL_POST (state) {
     var i = 0
+    const history = createHistory()
+    const loc = history.location
+
     state.posts.forEach((post) => {
-      if(post.slug === state.initial_post){
+      if(loc.pathname.includes(post.slug)){
         state.displayed_posts.push(post)
         state.current_index = i
       }
@@ -56,7 +61,7 @@ const mutations = {
 const actions = {
   fetchPosts ({state, commit, dispatch}) {
     commit('FETCH_POST')
-    const next_link = `${state.api.url+state.api.namespace}posts?_embed`
+    const next_link = `${state.api.url+state.api.namespace}posts?per_page=100&_embed`
     const req = new Ajax(next_link)
     req.on("success", (e) => {
       const object = JSON.parse(e.currentTarget.response)
