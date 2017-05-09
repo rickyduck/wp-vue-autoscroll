@@ -1,3 +1,8 @@
 .page .fusion-page-title-bar {
   height: 100%;
 }
+h1.blog-title {
+    padding: 30px 80px;
+    line-height: 1.3em;
+    font-size: 66px;
+}

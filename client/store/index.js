@@ -17,7 +17,15 @@ const state = {
   loading: false,
   api: {
     url: 'http://travel.cloud',
-    namespace: '/wp-json/wp/v2/'
+    namespace: '/wp-json/wp/v2/',
+    widget_namespace: '/wp-json/wp-rest-api-sidebars/v1/sidebars/'
+  },
+  widgets: {
+    sidebar: null
+  },
+  button: {
+    button_link: "https://login.travel.cloud/userSignUp/travel.html",
+    button_text: "Sign up – it’s free!"
   }
 }
 
@@ -31,6 +39,7 @@ const mutations = {
       if(loc.pathname.includes(post.slug)){
         state.displayed_posts.push(post)
         state.current_index = i
+        state.loading = false
       }
       i++
     })
@@ -46,6 +55,9 @@ const mutations = {
   },
   FILL_POSTS (state, posts) {
     state.posts = posts
+  },
+  FILL_WIDGETS (state, widget) {
+    state.widgets.sidebar = widget
   },
   FETCH_POST (state) {
     state.loading = true
@@ -73,6 +85,19 @@ const actions = {
     })
     req.send()
 
+  },
+  fetchWidgets ({state, commit, dispatch}) {
+    const widget_link = `${state.api.url+state.api.widget_namespace}avada-blog-sidebar`
+    const req = new Ajax(widget_link)
+    req.on("success", (e) => {
+      const object = JSON.parse(e.currentTarget.response)
+      commit('FILL_WIDGETS', object)
+
+    })
+    req.on("error", (e) => {
+      console.log(e)
+    })
+    req.send()
   }
 }
 

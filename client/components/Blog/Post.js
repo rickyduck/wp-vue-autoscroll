@@ -22,7 +22,7 @@ export default {
         if(!this.visible) {
           const history = createHistory()
           const loc = history.location
-          history.push('/'+this.post.slug)
+          history.push('/'+this.post.link.replace("http://travel.cloud/", ""))
           this.visible = true
         }
       } else {
@@ -41,7 +41,7 @@ export default {
     const featured_image = this.post._embedded['wp:featuredmedia'][0]
     return <div appeared="isVisible()" class="fusion-page-title-bar fusion-page-title-bar-none fusion-page-title-bar-center" style={`background-image: url('${featured_image.source_url}')`}>
     <BlogHeader post={this.post} />
-    <div id="main"><div class="fusion-row"><BlogContent post={this.post} /></div></div>
+    <div id="main"><div class="fusion-row"><BlogContent button={this.$store.state.button} post={this.post} sidebar={this.$store.state.widgets.sidebar} /></div></div>
     </div>
   },
   created () {
