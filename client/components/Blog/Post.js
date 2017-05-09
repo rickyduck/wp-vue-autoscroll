@@ -23,6 +23,7 @@ export default {
           const history = createHistory()
           const loc = history.location
           history.push('/'+this.post.link.replace("http://travel.cloud/", ""))
+          document.title = this.post.title.rendered
           this.visible = true
         }
       } else {

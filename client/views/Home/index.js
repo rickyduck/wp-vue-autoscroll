@@ -6,7 +6,9 @@ export default {
   render(h) {
     const items = this.$store.state.displayed_posts.map((item, index) => {
       console.log(item)
-      return <BlogPost post={item} store={this.$store}/>
+      return (<transition name="fade">
+                <BlogPost post={item} store={this.$store}/>
+              </transition>)
     })
     const loadingClass = this.$store.state.loading ? " loading" : ""
     const loadingHTML = this.$store.state.loading ? <div class='uil-ripple-css' style='transform:scale(0.46);'><div></div><div></div></div> : ""
