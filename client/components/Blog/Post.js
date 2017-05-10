@@ -1,12 +1,11 @@
-import BlogHeader from '../../components/Blog/Header'
-import BlogContent from '../../components/Blog/Content'
-import Vuesible from 'vuesible'
+import BlogHeader from './Header'
+import BlogContent from './Content'
+import Related from './Related'
 import createHistory from 'history/createBrowserHistory'
 
 import './style.css'
 
 export default {
-  mixins: [Vuesible()],
   props: ['post', 'store'],
   data: function() {
     return {
@@ -40,9 +39,12 @@ export default {
   },
   render(h) {
     const featured_image = this.post._embedded['wp:featuredmedia'][0]
-    return <div appeared="isVisible()" class="fusion-page-title-bar fusion-page-title-bar-none fusion-page-title-bar-center" style={`background-image: url('${featured_image.source_url}')`}>
+    return <div class="fusion-page-title-bar fusion-page-title-bar-none fusion-page-title-bar-center" style={`background-image: url('${featured_image.source_url}')`}>
     <BlogHeader post={this.post} />
-    <div id="main"><div class="fusion-row"><BlogContent button={this.$store.state.button} post={this.post} sidebar={this.$store.state.widgets.sidebar} /></div></div>
+      <div id="main">
+        <div class="fusion-row"><BlogContent button={this.$store.state.button} post={this.post} sidebar={this.$store.state.widgets.sidebar} /></div>
+        <div class="fusion-row"><Related categories={this.post.categories} post={this.post} /></div>
+      </div>
     </div>
   },
   created () {

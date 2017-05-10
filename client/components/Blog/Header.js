@@ -1,3 +1,4 @@
+import moment from 'moment'
 import './style.css'
 
 export default {
@@ -12,7 +13,7 @@ export default {
           <div class="fusion-page-title-captions">
 
             <h1 class="entry-title blog-title"><a href="http://travel.cloud/2017/04/05/save_money_business_travel-2/" domPropsInnerHTML={this.post.title.rendered} /></h1>
-            <h3>April 5th, 2017 &nbsp;&nbsp;|&nbsp;&nbsp; By <a href={author.link} title="" rel="author">{author.name}</a></h3>
+            <h3>{moment(this.post.date).format('MMMM Do, YYYY')} &nbsp;&nbsp;|&nbsp;&nbsp; By <a href={author.link} title="" rel="author">{author.name}</a></h3>
           </div>
           </div>
         </div>
