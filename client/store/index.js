@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Ajax from 'simple-ajax'
+import createHistory from 'history/createBrowserHistory'
+
 
 Vue.use(Vuex)
-
 const state = {
-  initial_post: 'save_money_business_travel-2',
+  //'save_money_business_travel-2'
+  initial_post: history.location,
   current_index: 0,
   end: false,
   prev_post: null,
@@ -14,21 +16,48 @@ const state = {
   displayed_posts: [],
   loading: false,
   api: {
-    url: 'http://travel.cloud',
-    namespace: '/wp-json/wp/v2/'
+    url: 'http://click.detype.com',
+    namespace: '/wp-json/wp/v2/',
+    widget_namespace: '/wp-json/wp-rest-api-sidebars/v1/sidebars/'
+  },
+  widgets: {
+    sidebar: null
+  },
+  button: {
+    button_link: null,
+    button_text: null
   }
 }
 
 const mutations = {
   INITIAL_POST (state) {
     var i = 0
-    state.posts.forEach((post) => {
-      if(post.slug === state.initial_post){
-        state.displayed_posts.push(post)
-        state.current_index = i
-      }
-      i++
-    })
+    const urlParams = new URLSearchParams(window.location.search)
+    if(urlParams.get("preview")) {
+      state.posts.forEach((post) => {
+        if(post.id === Number(urlParams.get("p"))){
+          state.displayed_posts.push(post)
+          state.current_index = i
+          state.loading = false
+          //dry
+        }
+        i++
+      })
+
+    } else {
+      const history = createHistory()
+      const loc = history.location
+
+      state.posts.forEach((post) => {
+        if(loc.pathname.includes(post.slug)){
+          state.displayed_posts.push(post)
+          state.current_index = i
+          state.loading = false
+        }
+        i++
+      })
+    }
+
 
 
   },
@@ -41,6 +70,9 @@ const mutations = {
   },
   FILL_POSTS (state, posts) {
     state.posts = posts
+  },
+  FILL_WIDGETS (state, widget) {
+    state.widgets.sidebar = widget
   },
   FETCH_POST (state) {
     state.loading = true
@@ -56,7 +88,7 @@ const mutations = {
 const actions = {
   fetchPosts ({state, commit, dispatch}) {
     commit('FETCH_POST')
-    const next_link = `${state.api.url+state.api.namespace}posts?_embed`
+    const next_link = `${state.api.url+state.api.namespace}posts?per_page=100&_embed`
     const req = new Ajax(next_link)
     req.on("success", (e) => {
       const object = JSON.parse(e.currentTarget.response)
@@ -68,6 +100,19 @@ const actions = {
     })
     req.send()
 
+  },
+  fetchWidgets ({state, commit, dispatch}) {
+    const widget_link = `${state.api.url+state.api.widget_namespace}avada-blog-sidebar`
+    const req = new Ajax(widget_link)
+    req.on("success", (e) => {
+      const object = JSON.parse(e.currentTarget.response)
+      commit('FILL_WIDGETS', object)
+
+    })
+    req.on("error", (e) => {
+      console.log(e)
+    })
+    req.send()
   }
 }
 
