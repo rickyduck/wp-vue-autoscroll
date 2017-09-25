@@ -9,14 +9,12 @@ export default {
   //  if(typeof this.random === 'undefined' || this.random === 0) this.random = Math.random()
     const that = this;
 
-    var postsOrdered = this.$store.state.posts.sort(() => {
-      return 0.5 - Number('0.'+this.post.id)
-    })
+    var postsOrdered = this.$store.state.posts;
     var index = 0
 
     const posts = postsOrdered.filter((post) => {
       var returnPost = false
-      if(index < 3) {
+      if(index < 4) {
 
         this.categories.forEach((category) => {
           if(post.categories.includes(category)) {

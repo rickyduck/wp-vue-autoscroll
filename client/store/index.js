@@ -24,25 +24,40 @@ const state = {
     sidebar: null
   },
   button: {
-    button_link: "https://login.travel.cloud/userSignUp/travel.html",
-    button_text: "Sign up – it’s free!"
+    button_link: null,
+    button_text: null
   }
 }
 
 const mutations = {
   INITIAL_POST (state) {
     var i = 0
-    const history = createHistory()
-    const loc = history.location
+    const urlParams = new URLSearchParams(window.location.search)
+    if(urlParams.get("preview")) {
+      state.posts.forEach((post) => {
+        if(post.id === Number(urlParams.get("p"))){
+          state.displayed_posts.push(post)
+          state.current_index = i
+          state.loading = false
+          //dry
+        }
+        i++
+      })
 
-    state.posts.forEach((post) => {
-      if(loc.pathname.includes(post.slug)){
-        state.displayed_posts.push(post)
-        state.current_index = i
-        state.loading = false
-      }
-      i++
-    })
+    } else {
+      const history = createHistory()
+      const loc = history.location
+
+      state.posts.forEach((post) => {
+        if(loc.pathname.includes(post.slug)){
+          state.displayed_posts.push(post)
+          state.current_index = i
+          state.loading = false
+        }
+        i++
+      })
+    }
+
 
 
   },
