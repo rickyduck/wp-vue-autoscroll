@@ -5,7 +5,12 @@ export default {
   render(h) {
     const items = this.$store.state.displayed_posts.map((item, index) => {
       console.log(item)
-      return <BlogPost post={item} store={this.$store}/>
+      if(typeof item !== 'undefined') {
+        return (<BlogPost post={item} store={this.$store}/>);
+      } else {
+        return <div></div>;
+      }
+      //return <BlogPost post={item} store={this.$store}/>
     })
     return (
       <div class="page">

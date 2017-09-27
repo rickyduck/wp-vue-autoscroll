@@ -2,13 +2,15 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Ajax from 'simple-ajax'
 import createHistory from 'history/createBrowserHistory'
-
+//import history from 'history';
 
 Vue.use(Vuex)
 const state = {
   //'save_money_business_travel-2'
-  initial_post: history.location,
+  initial_post: window.location.pathname.replace(new RegExp('/', 'g'),''),
   current_index: 0,
+  current_page: 1,
+  per_page: 10,
   end: false,
   prev_post: null,
   posts: [],
@@ -49,6 +51,7 @@ const mutations = {
       const loc = history.location
 
       state.posts.forEach((post) => {
+        debugger;
         if(loc.pathname.includes(post.slug)){
           state.displayed_posts.push(post)
           state.current_index = i
@@ -67,8 +70,30 @@ const mutations = {
       state.current_index = nextIndex
       state.displayed_posts.push(state.posts[nextIndex])
     }
+    if(nextIndex === state.posts.length-7 && !state.end) {
+      const last_page = state.posts[state.posts.length];
+      const page = state.current_page+1;
+      const next_link = `${state.api.url+state.api.namespace}posts?per_page=${state.per_page}&_embed&page=${page}`;
+      const req = new Ajax(next_link);
+      state.current_page = page;
+      req.on("success", (e) => {
+        const object = JSON.parse(e.currentTarget.response)
+        if(object.length === 0) {
+          state.end = true;
+        } else {
+          state.posts = state.posts.concat(object);
+
+        }
+      })
+      req.on("error", (e) => {
+        console.log(e)
+      });
+      req.send();
+    }
   },
+
   FILL_POSTS (state, posts) {
+    debugger;
     state.posts = posts
   },
   FILL_WIDGETS (state, widget) {
@@ -87,18 +112,28 @@ const mutations = {
 
 const actions = {
   fetchPosts ({state, commit, dispatch}) {
-    commit('FETCH_POST')
-    const next_link = `${state.api.url+state.api.namespace}posts?per_page=100&_embed`
-    const req = new Ajax(next_link)
-    req.on("success", (e) => {
-      const object = JSON.parse(e.currentTarget.response)
-      commit('FILL_POSTS', object)
-      commit('INITIAL_POST')
+    commit('FETCH_POST');
+
+    const first_post_link = `${state.api.url+state.api.namespace}posts?slug=${state.initial_post}&_embed`;
+    const first_post_req = new Ajax(first_post_link)
+    first_post_req.on("success", (e) => {
+
+      const single_post = JSON.parse(e.currentTarget.response)[0]
+      const next_link = `${state.api.url+state.api.namespace}posts?per_page=${state.per_page}&before=${single_post.date}&_embed`;
+      const post_list_req = new Ajax(next_link);
+      post_list_req.on("success", (e) => {
+
+        const object = JSON.parse(e.currentTarget.response);
+        object.unshift(single_post);
+        commit('FILL_POSTS', object);
+        commit('INITIAL_POST');
+      });
+      post_list_req.send();
     })
-    req.on("error", (e) => {
+    first_post_req.on("error", (e) => {
       console.log(e)
     })
-    req.send()
+    first_post_req.send()
 
   },
   fetchWidgets ({state, commit, dispatch}) {

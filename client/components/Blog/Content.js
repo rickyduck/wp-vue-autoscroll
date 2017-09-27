@@ -1,7 +1,6 @@
 export default {
   props: ['post', 'button', 'sidebar'],
   render() {
-    debugger;
     //const button = this.post.acf.button_link ? this.post.acf : this.button
     // const buttonElem = (button.button_link && button.button_text) ? <div class="button">
     //   <div class="fusion-button-wrappercenter">
@@ -28,8 +27,8 @@ export default {
 
 					</article>
         </div>
-        <div id="sidebar" class="sidebar fusion-widget-area fusion-content-widget-area" style="float: right;" domPropsInnerHTML={this.sidebar.rendered} />
 
       </div>;
     }
 }
+//        <div id="sidebar" class="sidebar fusion-widget-area fusion-content-widget-area" style="float: right;" domPropsInnerHTML={this.sidebar.rendered} />
