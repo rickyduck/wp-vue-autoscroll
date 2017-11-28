@@ -12,10 +12,23 @@ export default {
       }
       //return <BlogPost post={item} store={this.$store}/>
     })
+    var display = items;
+    if(items.length) {
+      display = items;
+    } else {
+      display = (<div class="lds-css ng-scope">
+    <div style="width:100%;height:100%" class="lds-facebook">
+
+        <div></div>
+        <div></div>
+        <div></div>
+      </div></div>);
+    }
     return (
       <div class="page">
-        {items}
+        {display}
       </div>
+
     )
   },
   created() {

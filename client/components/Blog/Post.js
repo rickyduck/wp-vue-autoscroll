@@ -33,9 +33,7 @@ export default {
         this.store.commit('NEXT_POST')
       }
     },
-    isVisible: function() {
-      debugger
-    }
+
   },
   render(h) {
     const featured_image = this.post._embedded['wp:featuredmedia'][0]

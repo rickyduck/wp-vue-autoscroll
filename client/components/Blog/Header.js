@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export default {
   props: ['post'],
 
@@ -11,8 +13,8 @@ export default {
           <div class="fusion-page-title-captions">
 
 
-            <h1 class="entry-title"><a href="http://travel.cloud/2017/04/05/save_money_business_travel-2/" >{this.post.title.rendered}</a></h1>
-            <h3>April 5th, 2017 &nbsp;&nbsp;|&nbsp;&nbsp; By <a href={author.link} title="" rel="author">{author.name}</a></h3>
+            <h1 class="entry-title"><a href="{link}" >{this.post.title.rendered}</a></h1>
+            <h3>{moment(this.post.date).format('MMMM do, YYYY')} &nbsp;&nbsp;|&nbsp;&nbsp; By <a href={author.link} title="" rel="author">{author.name}</a></h3>
           </div>
           </div>
         </div>

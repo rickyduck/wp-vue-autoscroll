@@ -22,11 +22,11 @@ if (config.electron) {
 }
 
 // use hash filename to support long-term caching
-base.output.filename = '[name].[chunkhash:8].js'
+base.output.filename = '[name].js'
 // add webpack plugins
 base.plugins.push(
   new ProgressPlugin(),
-  new ExtractTextPlugin('styles.[contenthash:8].css'),
+  new ExtractTextPlugin('styles.css'),
   new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify('production')
   }),

@@ -18,7 +18,7 @@ const state = {
   displayed_posts: [],
   loading: false,
   api: {
-    url: 'http://click.detype.com',
+    url: 'http://www.clicktravel.com',
     namespace: '/wp-json/wp/v2/',
     widget_namespace: '/wp-json/wp-rest-api-sidebars/v1/sidebars/'
   },
@@ -51,7 +51,6 @@ const mutations = {
       const loc = history.location
 
       state.posts.forEach((post) => {
-        debugger;
         if(loc.pathname.includes(post.slug)){
           state.displayed_posts.push(post)
           state.current_index = i
@@ -93,7 +92,6 @@ const mutations = {
   },
 
   FILL_POSTS (state, posts) {
-    debugger;
     state.posts = posts
   },
   FILL_WIDGETS (state, widget) {
