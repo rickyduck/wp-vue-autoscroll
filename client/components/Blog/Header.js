@@ -14,7 +14,7 @@ export default {
 
 
             <h1 class="entry-title"><a href="{link}" >{this.post.title.rendered}</a></h1>
-            <h3>{moment(this.post.date).format('MMMM do, YYYY')} &nbsp;&nbsp;|&nbsp;&nbsp; By <a href={author.link} title="" rel="author">{author.name}</a></h3>
+            <h3>{moment(this.post.date, "YYYY-MM-DD").format('MMMM Do, YYYY')} &nbsp;&nbsp;|&nbsp;&nbsp; By <a href={author.link} title="" rel="author">{author.name}</a></h3>
           </div>
           </div>
         </div>
